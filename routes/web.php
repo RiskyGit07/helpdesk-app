@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\Admin\TicketController as AdminTicketController;
+use App\Http\Controllers\User\TicketController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,7 +31,15 @@ Route::middleware('auth')->group(function () {
     
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
-    // CRUD Pengaduan (otomatis membuat semua route complaints.*)
-    Route::resource('complaints', ComplaintController::class);
+
+    Route::post('tickets/{id}/reply', [TicketController::class, 'reply'])->name('tickets.reply');
+    Route::post('tickets/{id}/close', [TicketController::class, 'close'])->name('tickets.close');
+
+    Route::resource('tickets', TicketController::class);
+});
+Route::middleware(['auth'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::resource('tickets', AdminTicketController::class);
 });

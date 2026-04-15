@@ -105,18 +105,33 @@
                                 </div>
                                 
                                 <!-- Semua Pengaduan -->
-                                <div class="menu-item">
-                                    <a class="menu-link" href="{{ route('complaints.index') }}">
-                                        <span class="menu-icon">
-                                            <i class="ki-outline ki-message-text-2 fs-2"></i>
-                                        </span>
-                                        <span class="menu-title">Semua Pengaduan</span>
-                                    </a>
-                                </div>
+                                {{-- ================= ADMIN ================= --}}
+                                @if(auth()->check() && auth()->user()->isAdmin())
+
+                                    <div class="menu-item">
+                                        <a class="menu-link" href="{{ route('admin.tickets.index') }}">
+                                            <span class="menu-icon">
+                                                <i class="ki-outline ki-message-text-2 fs-2"></i>
+                                            </span>
+                                            <span class="menu-title">Semua Pengaduan</span>
+                                        </a>
+                                    </div>
+                                {{-- ================= USER ================= --}}
+                                @else
+
+                                    <div class="menu-item">
+                                        <a class="menu-link" href="{{ route('tickets.index') }}">
+                                            <span class="menu-icon">
+                                                <i class="ki-outline ki-message-text-2 fs-2"></i>
+                                            </span>
+                                            <span class="menu-title">Semua Pengaduan</span>
+                                        </a>
+                                    </div>
+                                @endif
                                 
                                 <!-- Buat Pengaduan -->
                                 <div class="menu-item">
-                                    <a class="menu-link" href="{{ route('complaints.create') }}">
+                                    <a class="menu-link" href="{{ route('tickets.create') }}">
                                         <span class="menu-icon">
                                             <i class="ki-outline ki-add-files fs-2"></i>
                                         </span>

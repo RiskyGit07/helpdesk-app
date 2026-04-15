@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->where('username', $username)->first();
     }
+
+    public function isAdmin()
+    {
+        return $this->email === 'admin@helpdesk.com';
+    }
 }
