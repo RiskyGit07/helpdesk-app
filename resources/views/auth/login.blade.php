@@ -16,41 +16,44 @@
 </head>
 
 <body id="kt_body" class="app-blank">
-    <script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
-
     <div class="d-flex flex-column flex-root" id="kt_app_root">
-        <div class="d-flex flex-column flex-lg-row flex-column-fluid">
-            <!-- Logo mobile -->
-            <a href="{{ url('/') }}" class="d-block d-lg-none mx-auto py-20">
-                <img alt="Logo" src="{{ asset('assets/media/logos/default.svg') }}" class="theme-light-show h-25px" />
-                <img alt="Logo" src="{{ asset('assets/media/logos/default-dark.svg') }}" class="theme-dark-show h-25px" />
-            </a>
-            
-            <!-- Bagian Kiri: Form Login -->
-            <div class="d-flex flex-column flex-column-fluid flex-center w-lg-50 p-10">
+        <div class="d-flex flex-column flex-center flex-column-fluid">
+            <!-- Form Login di Tengah -->
+            <div class="d-flex flex-column flex-center w-100 p-10">
                 <div class="d-flex justify-content-between flex-column-fluid flex-column w-100 mw-450px">
-                    <!-- Header -->
-                    <div class="d-flex flex-stack py-2">
-                        <div class="me-2"></div>
-                        <div class="m-0">
-                            <span class="text-gray-400 fw-bold fs-5 me-2">Belum punya akun?</span>
-                            <a href="{{ route('register') }}" class="link-primary fw-bold fs-5">Daftar</a>
-                        </div>
-                    </div>
                     
                     <!-- Form -->
                     <div class="py-20">
                         <form class="form w-100" method="POST" action="{{ route('login') }}">
                             @csrf
+                            
+                            <!-- TAMPILKAN PESAN SUKSES (dari register) -->
+                            @if(session('success'))
+                                <div class="alert alert-success mb-5">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+                            
+                            <!-- TAMPILKAN PESAN ERROR (dari login gagal) -->
+                            @if($errors->any())
+                                <div class="alert alert-danger mb-5">
+                                    <ul class="mb-0">
+                                        @foreach($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            
                             <div class="card-body">
-                                <div class="text-start mb-10">
+                                <div class="text-center mb-10">
                                     <h1 class="text-dark mb-3 fs-3x">Masuk</h1>
                                     <div class="text-gray-400 fw-semibold fs-6">Akses dashboard helpdesk Anda</div>
                                 </div>
                                 
-                                <!-- Username -->
+                                <!-- Username (NIM/NIK/NIP) -->
                                 <div class="fv-row mb-8">
-                                    <input type="text" placeholder="Username" name="username" value="{{ old('username') }}" 
+                                    <input type="text" placeholder="NIM / NIK / NIP" name="username" value="{{ old('username') }}" 
                                         class="form-control form-control-solid @error('username') is-invalid @enderror" required />
                                     @error('username')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -66,21 +69,21 @@
                                     @enderror
                                 </div>
                                 
-                                <!-- Forgot Password -->
-                                <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-10">
-                                    <div></div>
-                                        {{-- <a href="{{ route('password.request') }}" class="link-primary">Lupa Password ?</a> --}}
-                                </div>
-                                
-                                <!-- Submit -->
-                                <div class="d-flex flex-stack">
-                                    <button type="submit" class="btn btn-primary me-2 flex-shrink-0">
+                                <!-- Tombol Login (FULL WIDTH) -->
+                                <div class="d-grid mb-5">
+                                    <button type="submit" class="btn btn-primary btn-lg">
                                         <span class="indicator-label">Masuk</span>
                                         <span class="indicator-progress">
                                             Tunggu sebentar...
                                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                                         </span>
                                     </button>
+                                </div>
+                                
+                                <!-- Link ke Register (DI BAWAH TOMBOL) -->
+                                <div class="text-center">
+                                    <span class="text-gray-400 fw-semibold fs-6">Belum punya akun?</span>
+                                    <a href="{{ route('register') }}" class="link-primary fw-semibold fs-6 ms-1">Daftar</a>
                                 </div>
                             </div>
                         </form>
@@ -94,10 +97,6 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- Bagian Kanan: Background Image -->
-            <div class="d-none d-lg-flex flex-lg-row-fluid w-50 bgi-size-cover bgi-position-y-center bgi-position-x-start bgi-no-repeat" 
-                 style="background-image: url({{ asset('assets/media/auth/bg11.png') }})"></div>
         </div>
     </div>
 
@@ -105,6 +104,5 @@
     <script>var hostUrl = "{{ asset('assets') }}/";</script>
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/authentication/sign-in/general.js') }}"></script>
 </body>
 </html>

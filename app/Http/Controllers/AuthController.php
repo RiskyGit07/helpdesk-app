@@ -14,7 +14,7 @@ class AuthController extends Controller
         return view('auth.login');
     }
     
-    // Proses login (hanya menggunakan username)
+    // Proses login (menggunakan username yang berisi NIM/NIK/NIP)
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -28,7 +28,7 @@ class AuthController extends Controller
         }
         
         return back()->withErrors([
-            'username' => 'Username atau password salah.',
+            'username' => 'NIM/NIK/NIP atau password salah.',
         ])->onlyInput('username');
     }
     
@@ -47,38 +47,61 @@ class AuthController extends Controller
         return view('auth.register');
     }
     
-    // Proses register
+    // Proses register - redirect ke login (TIDAK LANGSUNG LOGIN)
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'username' => 'required|string|max:255|unique:users',
+            'role' => 'required|in:mahasiswa,pegawai,asn',
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
-            'gender' => 'required|in:male,female',
-            'birth_date' => 'required|date',
-            'phone' => 'required|string|max:15',
-            'faculty' => 'required|string|max:255',
-            'address' => 'required|string',
+            'password' => 'required|min:8|confirmed',
+            
+            // Validasi berdasarkan role
+            'nim' => 'required_if:role,mahasiswa|string|unique:users,nim|nullable',
+            'nik' => 'required_if:role,pegawai|string|unique:users,nik|nullable',
+            'nip' => 'required_if:role,asn|string|unique:users,nip|nullable',
         ]);
         
-        $user = User::create([
-            'username' => $validated['username'],
+        // Tentukan username berdasarkan role (gunakan NIM/NIK/NIP)
+        $username = '';
+        if ($validated['role'] == 'mahasiswa') {
+            $username = $request->nim;
+        } elseif ($validated['role'] == 'pegawai') {
+            $username = $request->nik;
+        } elseif ($validated['role'] == 'asn') {
+            $username = $request->nip;
+        }
+        
+        // Siapkan data untuk disimpan
+        $userData = [
+            'username' => $username,  // Username diisi NIM/NIK/NIP
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
             'user_type' => 'user',
-            'gender' => $validated['gender'],
-            'birth_date' => $validated['birth_date'],
-            'phone' => $validated['phone'],
-            'faculty' => $validated['faculty'],
-            'address' => $validated['address'],
-            'study_program' => $request->study_program,
-            'position' => $request->position,
-        ]);
+            'role' => $validated['role'],
+        ];
         
-        Auth::login($user);
+        // Tambahkan NIM/NIK/NIP sesuai role (untuk kolom tersendiri)
+        if ($validated['role'] == 'mahasiswa') {
+            $userData['nim'] = $request->nim;
+        } elseif ($validated['role'] == 'pegawai') {
+            $userData['nik'] = $request->nik;
+        } elseif ($validated['role'] == 'asn') {
+            $userData['nip'] = $request->nip;
+        }
         
-        return redirect('/dashboard');
+        // Set default value untuk field yang wajib di database
+        $userData['gender'] = 'male';
+        $userData['birth_date'] = now();
+        $userData['phone'] = '-';
+        $userData['faculty'] = '-';
+        $userData['address'] = '-';
+        
+        // Simpan user ke database
+        User::create($userData);
+        
+        // Redirect ke halaman login dengan pesan sukses
+        return redirect('/login')->with('success', 'Akun berhasil dibuat! Silakan login dengan NIM/NIK/NIP dan password Anda.');
     }
 }

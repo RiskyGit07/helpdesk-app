@@ -16,6 +16,10 @@ class User extends Authenticatable
         'email',
         'password',
         'user_type',
+        'role',
+        'nim',
+        'nik',
+        'nip',
         'gender',
         'birth_date',
         'phone',
@@ -30,6 +34,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+<<<<<<< HEAD
     protected function casts(): array
     {
         return [
@@ -55,4 +60,10 @@ class User extends Authenticatable
     {
         return $this->email === 'admin@helpdesk.com';
     }
+=======
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'birth_date' => 'date',
+    ];
+>>>>>>> 0427184526c5dd354cf4f90f4767968228efb2b1
 }

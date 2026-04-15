@@ -105,6 +105,7 @@
                                 </div>
                                 
                                 <!-- Semua Pengaduan -->
+<<<<<<< HEAD
                                 {{-- ================= ADMIN ================= --}}
                                 @if(auth()->check() && auth()->user()->isAdmin())
 
@@ -128,6 +129,16 @@
                                         </a>
                                     </div>
                                 @endif
+=======
+                                <div class="menu-item">
+                                    <a class="menu-link" href="{{ route('tickets.index') }}">
+                                        <span class="menu-icon">
+                                            <i class="ki-outline ki-message-text-2 fs-2"></i>
+                                        </span>
+                                        <span class="menu-title">Semua Pengaduan</span>
+                                    </a>
+                                </div>
+>>>>>>> 0427184526c5dd354cf4f90f4767968228efb2b1
                                 
                                 <!-- Buat Pengaduan -->
                                 <div class="menu-item">
@@ -144,7 +155,7 @@
                                 
                                 <!-- Profil Saya -->
                                 <div class="menu-item">
-                                    <a class="menu-link" href="#">
+                                    <a class="menu-link" href="{{ route('profile') }}">
                                         <span class="menu-icon">
                                             <i class="ki-outline ki-profile-circle fs-2"></i>
                                         </span>
