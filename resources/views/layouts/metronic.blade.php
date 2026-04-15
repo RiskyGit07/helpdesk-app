@@ -106,7 +106,7 @@
                                 
                                 <!-- Semua Pengaduan -->
                                 <div class="menu-item">
-                                    <a class="menu-link" href="{{ route('complaints.index') }}">
+                                    <a class="menu-link" href="{{ route('tickets.index') }}">
                                         <span class="menu-icon">
                                             <i class="ki-outline ki-message-text-2 fs-2"></i>
                                         </span>
@@ -116,7 +116,7 @@
                                 
                                 <!-- Buat Pengaduan -->
                                 <div class="menu-item">
-                                    <a class="menu-link" href="{{ route('complaints.create') }}">
+                                    <a class="menu-link" href="{{ route('tickets.create') }}">
                                         <span class="menu-icon">
                                             <i class="ki-outline ki-add-files fs-2"></i>
                                         </span>
@@ -129,7 +129,7 @@
                                 
                                 <!-- Profil Saya -->
                                 <div class="menu-item">
-                                    <a class="menu-link" href="#">
+                                    <a class="menu-link" href="{{ route('profile') }}">
                                         <span class="menu-icon">
                                             <i class="ki-outline ki-profile-circle fs-2"></i>
                                         </span>
