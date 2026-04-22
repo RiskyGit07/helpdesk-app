@@ -38,7 +38,7 @@
                     </div>
                     
                     <div class="d-flex my-4">
-                        <a href="{{ route('profile.edit') }}" class="btn btn-primary">
+                        <a href="{{ route('user.profile.edit') }}" class="btn btn-primary">
                             <i class="ki-outline ki-pencil fs-3"></i> Edit Profil
                         </a>
                     </div>

@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="menu-item px-5">
                                     <a class="menu-link px-5" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Keluar</a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
+                                    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">@csrf</form>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +122,7 @@
                                         <span class="menu-icon"><i class="ki-outline ki-exit-right fs-2"></i></span>
                                         <span class="menu-title">Keluar</span>
                                     </a>
-                                    <form id="sidebar-logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
+                                    <form id="sidebar-logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">@csrf</form>
                                 </div>
                                 
                             </div>

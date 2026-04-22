@@ -10,13 +10,13 @@
         <div class="card card-flush shadow-sm">
             <div class="card-body d-flex align-items-center py-6">
                 <div class="symbol symbol-50px me-4">
-                    <div class="symbol-label bg-light-warning">
-                        <i class="fas fa-ticket-alt fs-2x text-warning"></i>
+                    <div class="symbol-label bg-light-info">
+                        <i class="fas fa-ticket-alt fs-2x text-info"></i>
                     </div>
                 </div>
                 <div>
                     <span class="text-gray-600 fw-semibold fs-7">Total Tiket</span>
-                    <h2 class="text-warning fs-1 fw-bold mb-0">{{ $totalTickets ?? 0 }}</h2>
+                    <h2 class="text-info fs-1 fw-bold mb-0">{{ $totalTickets ?? 0 }}</h2>
                 </div>
             </div>
         </div>
@@ -44,13 +44,13 @@
         <div class="card card-flush shadow-sm">
             <div class="card-body d-flex align-items-center py-6">
                 <div class="symbol symbol-50px me-4">
-                    <div class="symbol-label bg-light-info">
-                        <i class="fas fa-clock fs-2x text-info"></i>
+                    <div class="symbol-label bg-light-warning">
+                        <i class="fas fa-clock fs-2x text-warning"></i>
                     </div>
                 </div>
                 <div>
                     <span class="text-gray-600 fw-semibold fs-7">In Progress</span>
-                    <h2 class="text-info fs-1 fw-bold mb-0">{{ $inProgressTickets ?? 0 }}</h2>
+                    <h2 class="text-warning fs-1 fw-bold mb-0">{{ $inProgressTickets ?? 0 }}</h2>
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@
             <i class="fas fa-list me-2 text-primary"></i>
             Tiket Terbaru
         </h3>
-        <a href="{{ route('tickets.index') }}" class="btn btn-primary">
+        <a href="{{ route('user.tickets.index') }}" class="btn btn-primary">
             Lihat Semua
             <i class="fas fa-arrow-right ms-1"></i>
         </a>

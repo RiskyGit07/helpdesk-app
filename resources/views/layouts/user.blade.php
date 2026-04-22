@@ -68,11 +68,11 @@
                                 </div>
                                 <div class="separator my-2"></div>
                                 <div class="menu-item px-5">
-                                    <a href="{{ route('profile') }}" class="menu-link px-5">Profil Saya</a>
+                                    <a href="{{ route('user.profile') }}" class="menu-link px-5">Profil Saya</a>
                                 </div>
                                 <div class="menu-item px-5">
                                     <a class="menu-link px-5" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Keluar</a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
+                                    <form id="logout-form" action="{{ route('user.logout') }}" method="POST" class="d-none">@csrf</form>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                                 
                                 <!-- Dashboard -->
                                 <div class="menu-item">
-                                    <a class="menu-link" href="{{ route('dashboard') }}">
+                                    <a class="menu-link" href="{{ route('user.dashboard') }}">
                                         <span class="menu-icon"><i class="ki-outline ki-home-2 fs-2"></i></span>
                                         <span class="menu-title">Dashboard</span>
                                     </a>
@@ -100,7 +100,7 @@
                                 
                                 <!-- Semua Pengaduan -->
                                 <div class="menu-item">
-                                    <a class="menu-link" href="{{ route('tickets.index') }}">
+                                    <a class="menu-link" href="{{ route('user.tickets.index') }}">
                                         <span class="menu-icon"><i class="ki-outline ki-message-text-2 fs-2"></i></span>
                                         <span class="menu-title">Semua Pengaduan</span>
                                     </a>
@@ -108,7 +108,7 @@
                                 
                                 <!-- Buat Pengaduan -->
                                 <div class="menu-item">
-                                    <a class="menu-link" href="{{ route('tickets.create') }}">
+                                    <a class="menu-link" href="{{ route('user.tickets.create') }}">
                                         <span class="menu-icon"><i class="ki-outline ki-add-files fs-2"></i></span>
                                         <span class="menu-title">Buat Pengaduan</span>
                                     </a>
@@ -118,7 +118,7 @@
                                 
                                 <!-- Profil Saya -->
                                 <div class="menu-item">
-                                    <a class="menu-link" href="{{ route('profile') }}">
+                                    <a class="menu-link" href="{{ route('user.profile') }}">
                                         <span class="menu-icon"><i class="ki-outline ki-profile-circle fs-2"></i></span>
                                         <span class="menu-title">Profil Saya</span>
                                     </a>
@@ -130,7 +130,7 @@
                                         <span class="menu-icon"><i class="ki-outline ki-exit-right fs-2"></i></span>
                                         <span class="menu-title">Keluar</span>
                                     </a>
-                                    <form id="sidebar-logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
+                                    <form id="sidebar-logout-form" action="{{ route('user.logout') }}" method="POST" class="d-none">@csrf</form>
                                 </div>
                                 
                             </div>

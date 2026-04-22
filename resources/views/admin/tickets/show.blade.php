@@ -1,4 +1,4 @@
-@extends('layouts.user')
+@extends('layouts.admin')
 
 @section('title', 'Detail Pengaduan - ' . $ticket->ticket_number)
 
@@ -36,7 +36,8 @@
         </div>
         
         <div class="card-body pt-0">
-            <!-- Informasi Pelapor -->
+
+            {{-- INFORMASI PELAPOR --}}
             <div class="mb-10">
                 <div class="separator separator-dashed my-6"></div>
                 <div class="d-flex align-items-center mb-5">
@@ -50,6 +51,7 @@
                         <div class="text-muted fs-7">Data pengirim pengaduan</div>
                     </div>
                 </div>
+
                 <div class="row g-5">
                     <div class="col-md-6">
                         <div class="bg-light rounded p-4 h-100">
@@ -57,12 +59,14 @@
                             <div class="fw-semibold fs-6">{{ $ticket->user->name }}</div>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="bg-light rounded p-4 h-100">
                             <div class="text-muted fs-7 mb-1">Email</div>
                             <div class="fw-semibold fs-6">{{ $ticket->user->email }}</div>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="bg-light rounded p-4 h-100">
                             <div class="text-muted fs-7 mb-1">Nomor Identifikasi</div>
@@ -78,6 +82,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="bg-light rounded p-4 h-100">
                             <div class="text-muted fs-7 mb-1">Fakultas / Program Studi</div>
@@ -92,7 +97,7 @@
                 </div>
             </div>
 
-            <!-- Detail Pengaduan -->
+            {{-- DETAIL PENGADUAN --}}
             <div class="mb-10">
                 <div class="separator separator-dashed my-6"></div>
                 <div class="d-flex align-items-center mb-5">
@@ -106,10 +111,11 @@
                         <div class="text-muted fs-7">Isi lengkap pengaduan</div>
                     </div>
                 </div>
+
                 <div class="bg-light rounded p-6 mb-5">
                     <h4 class="mb-4">{{ $ticket->title }}</h4>
                     <div class="text-muted mb-3 fs-7">
-                        <i class="ki-outline ki-calendar"></i> Dilaporkan pada {{ $ticket->created_at->format('d F Y H:i') }}
+                        Dilaporkan pada {{ $ticket->created_at->format('d F Y H:i') }}
                     </div>
                     <div class="border-top pt-4 mt-2">
                         {!! nl2br(e($ticket->description)) !!}
@@ -125,38 +131,38 @@
                     </div>
                     <div class="flex-grow-1">
                         <div class="fw-semibold text-gray-800">Lampiran Bukti Pendukung</div>
-                        <div class="text-muted fs-7">Klik tombol di samping untuk melihat atau mengunduh file</div>
+                        <div class="text-muted fs-7">Klik untuk melihat file</div>
                     </div>
                     <a href="{{ asset('storage/' . $ticket->attachment) }}" target="_blank" class="btn btn-sm btn-primary">
-                        <i class="ki-outline ki-eye fs-4 me-1"></i> Lihat Lampiran
+                        Lihat Lampiran
                     </a>
                 </div>
                 @endif
             </div>
-{{-- ===== TAMBAHAN BALASAN DI SINI ===== --}}
+
+            {{-- ===== TAMBAHAN BALASAN DI SINI ===== --}}
             <div class="mb-10">
                 <div class="separator separator-dashed my-6"></div>
 
-                <div class="d-flex align-items-center mb-5">
-                    <h5 class="mb-0">Balasan</h5>
-                </div>
+                <h5 class="mb-4">Balasan</h5>
 
                 @forelse($ticket->responses as $response)
                     <div class="mb-4 p-4 bg-light rounded">
                         <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center gap-2">
-                                    <strong>{{ $response->user->name }}</strong>
+                            <div class="d-flex align-items-center gap-2">
+                                <strong>{{ $response->user->name }}</strong>
+                                
+                                {{-- TAMPILKAN TIPE USER (ADMIN / USER) LANGSUNG DI SAMPING NAMA --}}
+                                @if($response->user->user_type == 'admin')
+                                    <span class="badge badge-danger" style="font-size: 11px;">Admin</span>
+                                @else
+                                    d<span class="badge badge-secondary" style="font-size: 11px;">User</span>
+                                @endif
+                            </div>
 
-                                    @if($response->user->user_type == 'admin')
-                                        <span class="badge badge-danger" style="font-size: 11px;">Admin</span>
-                                    @else
-                                        <span class="badge badge-secondary" style="font-size: 11px;">User</span>
-                                    @endif
-                                </div>
-
-                                <small class="text-muted">
-                                    {{ $response->created_at->format('d M Y H:i') }}
-                                </small>
+                            <small class="text-muted">
+                                {{ $response->created_at->format('d M Y H:i') }}
+                            </small>
                         </div>
 
                         <div class="mt-2">
@@ -168,9 +174,9 @@
                 @endforelse
             </div>
 
-            {{-- FORM BALAS USER --}}
+            {{-- FORM BALAS ADMIN --}}
             <div class="mb-10">
-                <form action="{{ route('user.tickets.response', $ticket->id) }}" method="POST">
+                <form action="{{ route('admin.tickets.response', $ticket->id) }}" method="POST">
                     @csrf
 
                     <div class="mb-3">
@@ -184,13 +190,32 @@
                 </form>
             </div>
 
-            <!-- Aksi - Hanya tombol kembali -->
+            {{-- AKSI ADMIN --}}
             <div class="separator separator-dashed my-6"></div>
-            <div class="d-flex justify-content-end">
-                <a href="{{ route('user.tickets.index') }}" class="btn btn-light">
-                    <i class="ki-outline ki-arrow-left"></i> Kembali
+
+            <div class="d-flex justify-content-between flex-wrap gap-3">
+                <a href="{{ route('admin.tickets.index') }}" class="btn btn-light">
+                    Kembali
                 </a>
+
+                {{-- Update Status --}}
+                <form action="{{ route('admin.tickets.updateStatus', $ticket->id) }}" method="POST" class="d-flex gap-2">
+                    @csrf
+                    @method('PUT')
+
+                    <select name="status" class="form-select form-select-sm">
+                        <option value="open" {{ $ticket->status == 'open' ? 'selected' : '' }}>Open</option>
+                        <option value="in_progress" {{ $ticket->status == 'in_progress' ? 'selected' : '' }}>In Progress</option>
+                        <option value="resolved" {{ $ticket->status == 'resolved' ? 'selected' : '' }}>Resolved</option>
+                        <option value="closed" {{ $ticket->status == 'closed' ? 'selected' : '' }}>Closed</option>
+                    </select>
+
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        Update Status
+                    </button>
+                </form>
             </div>
+
         </div>
     </div>
 </div>

@@ -18,7 +18,7 @@
                 Silakan lengkapi data profil Anda terlebih dahulu sebelum mengakses halaman lainnya.
             </div>
 
-            <form method="POST" action="{{ route('profile.update') }}">
+            <form method="POST" action="{{ route('user.profile.update') }}">
                 @csrf
                 @method('PUT')
 

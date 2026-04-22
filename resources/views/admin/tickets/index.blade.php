@@ -129,13 +129,6 @@
                     </tbody>
                 </table>
             </div>
-            
-            <!-- Pagination -->
-            @if(method_exists($tickets, 'links'))
-                <div class="d-flex justify-content-center mt-5">
-                    {{ $tickets->links() }}
-                </div>
-            @endif
         </div>
     </div>
 </div>

@@ -15,53 +15,65 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Redirect root ke login
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// ========== GUEST ROUTES (belum login) ==========
+// ================= GUEST (BELUM LOGIN) =================
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
+
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
 
-// ========== PROFILE ROUTES (tanpa middleware profile.complete) ==========
-Route::middleware(['auth'])->group(function () {
-    // Profile User
-    Route::get('/profile', [UserProfileController::class, 'index'])->name('profile');
-    Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
-});
 
-// ========== USER ROUTES (auth + profile lengkap) ==========
-Route::middleware(['auth', 'profile.complete'])->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    
-    // Dashboard User
-    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
-    
-    // Tickets User
-    Route::resource('tickets', UserTicketController::class);
-    Route::post('tickets/{id}/close', [UserTicketController::class, 'close'])->name('tickets.close');
-});
+Route::middleware(['auth'])
+    ->prefix('user')
+    ->name('user.')
+    ->group(function () {
 
-// ========== ADMIN ROUTES ==========
+        // ✅ logout (bebas)
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+        // ✅ halaman wajib isi profil (TIDAK kena middleware)
+        Route::get('/profile/complete', [UserProfileController::class, 'completeForm'])->name('profile.complete');
+        Route::post('/profile/complete', [UserProfileController::class, 'completeStore'])->name('profile.complete.store');
+
+        // ✅ SEMUA YANG DIKUNCI
+        Route::middleware('profile.complete')->group(function () {
+
+            Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+
+            Route::get('/profile', [UserProfileController::class, 'index'])->name('profile');
+            Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
+            Route::put('/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
+
+            Route::resource('tickets', UserTicketController::class);
+
+        });
+    });
+
+
+// ================= ADMIN =================
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        // Dashboard Admin
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-        
-        // Tickets Admin
-        Route::resource('tickets', AdminTicketController::class);
-        Route::put('tickets/{ticket}/status', [AdminTicketController::class, 'updateStatus'])->name('tickets.updateStatus');
-        
-        // Profile Admin
-        Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile');
-        Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('profile.edit');
-        Route::put('/profile/update', [AdminProfileController::class, 'update'])->name('profile.update');
+
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+        Route::get('/profile/complete', [AdminProfileController::class, 'completeForm'])->name('profile.complete');
+        Route::post('/profile/complete', [AdminProfileController::class, 'completeStore'])->name('profile.complete.store');
+
+        Route::middleware('admin.profile.complete')->group(function () {
+
+            Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+            Route::resource('tickets', AdminTicketController::class);
+
+            Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile');
+        });
     });
+    

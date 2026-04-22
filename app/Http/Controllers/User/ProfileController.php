@@ -44,6 +44,34 @@ class ProfileController extends Controller
             'birth_date' => $request->birth_date,
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Profil berhasil dilengkapi!');
+        return redirect()->route('user.profile')
+                        ->with('success', 'Profil berhasil di update!');
+    }
+
+    public function completeForm()
+    {
+        return view('user.profile.complete');
+    }
+
+    public function completeStore(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'gender' => 'required|in:male,female',
+            'phone' => 'required|string|max:15',
+            'address' => 'required|string|max:255',
+            'birth_date' => 'required|date',
+        ]);
+
+        $user->update([
+            'gender' => $request->gender,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'birth_date' => $request->birth_date,
+            'profile_completed' => 1, 
+        ]);
+
+        return redirect()->route('user.dashboard')->with('success', 'Profil berhasil dilengkapi!');
     }
 }

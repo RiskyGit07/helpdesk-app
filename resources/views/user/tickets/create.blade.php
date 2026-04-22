@@ -8,7 +8,7 @@
         <div class="card-header">
             <h3 class="card-title">Buat Pengaduan Baru</h3>
         </div>
-        <form action="{{ route('tickets.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('user.tickets.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
                 <!-- Informasi Pelapor (Readonly dari data user) -->
@@ -89,7 +89,7 @@
             </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Kirim Pengaduan</button>
-                <a href="{{ route('tickets.index') }}" class="btn btn-light">Batal</a>
+                <a href="{{ route('user.tickets.index') }}" class="btn btn-light">Batal</a>
             </div>
         </form>
     </div>

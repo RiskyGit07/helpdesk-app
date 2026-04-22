@@ -22,8 +22,9 @@ class User extends Authenticatable
         'fakultas',
         'address',
         'prodi',
-        'jabatan',
+        'position',
         'profile_completed',
+        'admin_profile_completed',
     ];
 
     protected $hidden = [

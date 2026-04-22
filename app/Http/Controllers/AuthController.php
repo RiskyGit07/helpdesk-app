@@ -25,10 +25,10 @@ class AuthController extends Controller
             $request->session()->regenerate();
             
             if (Auth::user()->user_type === 'admin') {
-                return redirect()->intended('/admin/dashboard');
+                return redirect()->route('admin.dashboard');
             }
             
-            return redirect()->intended('/dashboard');
+            return redirect()->route('user.dashboard');
         }
 
         return back()->withErrors([
@@ -61,7 +61,7 @@ class AuthController extends Controller
             'user_type' => $validated['user_type'],
             'fakultas' => $validated['fakultas'] ?? null,
             'prodi' => $validated['prodi'] ?? null,
-            'profile_completed' => 1,
+            'profile_completed' => 0,
         ]);
 
         return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');

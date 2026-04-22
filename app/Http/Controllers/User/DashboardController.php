@@ -10,6 +10,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        
+
         $userId = Auth::id();
         
         $totalTickets = Ticket::where('user_id', $userId)->count();
