@@ -46,6 +46,40 @@
 
                         <div class="row mb-4">
                             <div class="col-md-6">
+                                <label class="form-label required">Fakultas</label>
+                                <input type="text" name="fakultas" id="fakultas"
+                                    class="form-control @error('fakultas') is-invalid @enderror"
+                                    value="{{ old('fakultas', Auth::user()->fakultas) }}">
+                                @error('fakultas')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" id="prodi_label">Program Studi</label>
+                                <input type="text" name="prodi" id="prodi"
+                                    class="form-control @error('prodi') is-invalid @enderror"
+                                    value="{{ old('prodi', Auth::user()->prodi) }}">
+                                @error('prodi')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-4" id="jabatan_field">
+                            <div class="col-md-6">
+                                <label class="form-label" id="jabatan_label">Jabatan</label>
+                                <input type="text" name="position" id="position"
+                                    class="form-control @error('position') is-invalid @enderror"
+                                    value="{{ old('position', Auth::user()->position) }}">
+                                @error('position')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
                                 <label class="form-label required">Jenis Kelamin</label>
                                 <select name="gender" class="form-select @error('gender') is-invalid @enderror" required>
                                     <option value="">Pilih Jenis Kelamin</option>
@@ -76,15 +110,6 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
-                            <div class="col-md-6">
-                                <label class="form-label required">Jabatan</label>
-                                <input type="text" name="position" class="form-control @error('position') is-invalid @enderror" 
-                                       value="{{ old('position', Auth::user()->position) }}" placeholder="Contoh: Kepala Helpdesk" required>
-                                @error('position')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
                         </div>
 
                         <div class="row mb-4">
@@ -109,4 +134,39 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const userType = "{{ Auth::user()->user_type }}";
+
+    const fakultas = document.getElementById('fakultas');
+    const prodi = document.getElementById('prodi');
+    const position = document.getElementById('position');
+
+    const jabatanField = document.getElementById('jabatan_field');
+    const jabatanLabel = document.getElementById('jabatan_label');
+    const prodiLabel = document.getElementById('prodi_label');
+
+    if (userType === 'mahasiswa') {
+        // Mahasiswa
+        fakultas.required = true;
+        prodi.required = true;
+
+        jabatanField.style.display = 'none';
+        position.required = false;
+
+        prodiLabel.classList.add('required');
+
+    } else {
+        // Pegawai ASN / Non ASN
+        fakultas.required = true;
+        prodi.required = false;
+
+        jabatanField.style.display = 'block';
+        position.required = true;
+
+        jabatanLabel.classList.add('required');
+    }
+});
+</script>
 @endsection

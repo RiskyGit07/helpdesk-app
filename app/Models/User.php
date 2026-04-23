@@ -24,19 +24,12 @@ class User extends Authenticatable
         'prodi',
         'position',
         'profile_completed',
-        'admin_profile_completed',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
-
-    // Ganti email dengan username untuk login
-    public function username()
-    {
-        return 'username';
-    }
 
     public function isAdmin()
     {

@@ -62,6 +62,17 @@ class ProfileController extends Controller
             'phone' => 'required|string|max:15',
             'address' => 'required|string|max:255',
             'birth_date' => 'required|date',
+            'fakultas' => 'required|string|max:255',
+
+            // mahasiswa wajib prodi
+            'prodi' => Auth::user()->user_type === 'mahasiswa'
+                ? 'required|string|max:255'
+                : 'nullable|string|max:255',
+
+            // pegawai wajib jabatan
+            'position' => Auth::user()->user_type !== 'mahasiswa'
+                ? 'required|string|max:255'
+                : 'nullable|string|max:255',
         ]);
 
         $user->update([
@@ -69,7 +80,10 @@ class ProfileController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'birth_date' => $request->birth_date,
-            'profile_completed' => 1, 
+            'fakultas' => $request->fakultas,
+            'prodi' => $request->prodi,
+            'position' => $request->position,
+            'profile_completed' => 1,
         ]);
 
         return redirect()->route('user.dashboard')->with('success', 'Profil berhasil dilengkapi!');

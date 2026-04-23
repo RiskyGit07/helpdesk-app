@@ -90,28 +90,6 @@
                                     @enderror
                                 </div>
                                 
-                                <!-- Fakultas (khusus mahasiswa) -->
-                                <div id="faculty_field" style="display: none;">
-                                    <div class="fv-row mb-8">
-                                        <input type="text" placeholder="Fakultas" name="fakultas" value="{{ old('fakultas') }}" 
-                                            class="form-control form-control-solid @error('fakultas') is-invalid @enderror" />
-                                        @error('fakultas')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                
-                                <!-- Program Studi (khusus mahasiswa) -->
-                                <div id="prodi_field" style="display: none;">
-                                    <div class="fv-row mb-8">
-                                        <input type="text" placeholder="Program Studi" name="prodi" value="{{ old('prodi') }}" 
-                                            class="form-control form-control-solid @error('prodi') is-invalid @enderror" />
-                                        @error('prodi')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                
                                 <!-- Password -->
                                 <div class="fv-row mb-8">
                                     <input type="password" placeholder="Password (minimal 6 karakter)" name="password" 
@@ -160,40 +138,22 @@
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
     
     <script>
+
         document.addEventListener('DOMContentLoaded', function() {
             const roleSelect = document.getElementById('role_select');
             const usernameHint = document.getElementById('username_hint');
-            const facultyField = document.getElementById('faculty_field');
-            const prodiField = document.getElementById('prodi_field');
 
             function updateFields() {
                 const selectedRole = roleSelect.value;
                 
                 if (selectedRole === 'mahasiswa') {
                     usernameHint.innerHTML = 'Masukkan NIM (Nomor Induk Mahasiswa) sebagai Username';
-                    facultyField.style.display = 'block';
-                    prodiField.style.display = 'block';
-                    document.querySelector('input[name="fakultas"]').required = true;
-                    document.querySelector('input[name="prodi"]').required = true;
-                    
                 } else if (selectedRole === 'pegawai_asn') {
                     usernameHint.innerHTML = 'Masukkan NIP (Nomor Induk Pegawai ASN) sebagai Username';
-                    facultyField.style.display = 'none';
-                    prodiField.style.display = 'none';
-                    document.querySelector('input[name="fakultas"]').required = false;
-                    document.querySelector('input[name="prodi"]').required = false;
-                    
                 } else if (selectedRole === 'pegawai_non_asn') {
                     usernameHint.innerHTML = 'Masukkan NIK (Nomor Induk Kependudukan) sebagai Username';
-                    facultyField.style.display = 'none';
-                    prodiField.style.display = 'none';
-                    document.querySelector('input[name="fakultas"]').required = false;
-                    document.querySelector('input[name="prodi"]').required = false;
-                    
                 } else {
                     usernameHint.innerHTML = '';
-                    facultyField.style.display = 'none';
-                    prodiField.style.display = 'none';
                 }
             }
 
