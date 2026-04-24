@@ -73,6 +73,8 @@ Route::middleware(['auth', 'admin'])
 
             Route::resource('tickets', AdminTicketController::class);
 
+            Route::post('tickets/{id}/response', [AdminTicketController::class, 'sendResponse'])->name('tickets.response');
+            Route::put('tickets/{id}/status', [AdminTicketController::class, 'updateStatus'])->name('tickets.updateStatus');
             Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile');
             Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('profile.edit');
             Route::put('/profile/update', [AdminProfileController::class, 'update'])->name('profile.update');
