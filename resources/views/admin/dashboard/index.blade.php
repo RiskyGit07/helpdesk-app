@@ -112,13 +112,13 @@
                                     'open' => 'primary',
                                     'in_progress' => 'warning',
                                     'resolved' => 'success',
-                                    'closed' => 'secondary'
+                                    'rejected' => 'danger'
                                 ];
                                 $statusTexts = [
                                     'open' => 'Open',
                                     'in_progress' => 'In Progress',
                                     'resolved' => 'Resolved',
-                                    'closed' => 'Closed'
+                                    'rejected' => 'Rejected'
                                 ];
                             @endphp
                             <span class="badge badge-{{ $statusColors[$ticket->status] }} px-3 py-2">

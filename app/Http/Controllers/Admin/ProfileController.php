@@ -28,9 +28,9 @@ class ProfileController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
             'gender' => 'required|in:male,female',
             'birth_date' => 'required|date',
-            'phone' => 'required|string|max:15',
+            'phone' => 'required|string|max:20',
             'address' => 'required|string|max:255',
-            'position' => 'nullable|string|max:255',
+            'position' => 'required|string|max:255',
             'password' => 'nullable|min:6|confirmed',
         ]);
 
@@ -71,9 +71,9 @@ class ProfileController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
             'gender' => 'required|in:male,female',
             'birth_date' => 'required|date',
-            'phone' => 'required|string|max:15',
+            'phone' => 'required|string|max:20',
             'address' => 'required|string|max:255',
-            'position' => 'required|string|max:255', // DIUBAH: jadi required
+            'position' => 'required|string|max:255', 
         ]);
 
         $user->update([

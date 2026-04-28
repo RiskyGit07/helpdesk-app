@@ -21,7 +21,7 @@
                                 'open' => 'Open',
                                 'in_progress' => 'In Progress',
                                 'resolved' => 'Resolved',
-                                'closed' => 'Closed'
+                                'rejected' => 'Rejected'
                             ];
                             $currentStatus = request('status', 'all');
                         @endphp
@@ -56,9 +56,9 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item {{ request('status') == 'closed' ? 'active' : '' }}" 
-                               href="{{ route('admin.tickets.index', ['status' => 'closed']) }}">
-                                <i class="fas fa-archive me-2 text-secondary"></i> Closed
+                            <a class="dropdown-item {{ request('status') == 'rejected' ? 'active' : '' }}" 
+                               href="{{ route('admin.tickets.index', ['status' => 'rejected']) }}">
+                                <i class="fas fa-archive me-2 text-danger"></i> Rejected
                             </a>
                         </li>
                     </ul>
@@ -86,13 +86,13 @@
                                 'open' => 'primary',
                                 'in_progress' => 'warning',
                                 'resolved' => 'success',
-                                'closed' => 'secondary'
+                                'rejected' => 'danger'
                             ];
                             $statusTexts = [
                                 'open' => 'Open',
                                 'in_progress' => 'In Progress',
                                 'resolved' => 'Resolved',
-                                'closed' => 'Closed'
+                                'rejected' => 'Rejected'
                             ];
                         @endphp
                         
@@ -104,7 +104,7 @@
                             <td>{{ $ticket->user->name ?? 'User tidak ditemukan' }}</td>
                             <td>{{ $ticket->title ?? $ticket->subject }}</td>
                             <td>
-                                <span class="badge badge-{{ $statusColors[$ticket->status] ?? 'secondary' }} px-3 py-2">
+                                <span class="badge badge-{{ $statusColors[$ticket->status] ?? 'danger' }} px-3 py-2">
                                     {{ $statusTexts[$ticket->status] ?? ucfirst(str_replace('_',' ', $ticket->status)) }}
                                 </span>
                             </td>

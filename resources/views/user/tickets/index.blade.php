@@ -22,7 +22,7 @@
                                     'open' => 'Open',
                                     'in_progress' => 'In Progress',
                                     'resolved' => 'Resolved',
-                                    'closed' => 'Closed'
+                                    'rejected' => 'Rejected'
                                 ];
                                 $currentStatus = request('status', 'all');
                             @endphp
@@ -60,9 +60,9 @@
                             </li>
 
                             <li>
-                                <a class="dropdown-item {{ request('status') == 'closed' ? 'active' : '' }}" 
-                                    href="{{ route('user.tickets.index', ['status' => 'closed']) }}">
-                                    <i class="fas fa-archive me-2 text-secondary"></i> Closed
+                                <a class="dropdown-item {{ request('status') == 'rejected' ? 'active' : '' }}" 
+                                    href="{{ route('user.tickets.index', ['status' => 'rejected']) }}">
+                                    <i class="fas fa-archive me-2 text-danger"></i> Rejected
                                 </a>
                             </li>
                         </ul>
@@ -100,13 +100,13 @@
                                 'open' => 'primary',
                                 'in_progress' => 'warning',
                                 'resolved' => 'success',
-                                'closed' => 'secondary'
+                                'rejected' => 'danger'
                             ];
                             $statusTexts = [
                                 'open' => 'Open',
                                 'in_progress' => 'In Progress',
                                 'resolved' => 'Resolved',
-                                'closed' => 'Closed'
+                                'rejected' => 'Rejected'
                             ];
                         @endphp
 

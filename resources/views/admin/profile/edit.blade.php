@@ -6,9 +6,6 @@
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">Edit Profil Admin</h3>
-        <a href="{{ route('admin.profile') }}" class="btn btn-light">
-            <i class="ki-outline ki-arrow-left fs-3"></i> Kembali
-        </a>
     </div>
     <div class="card-body">
         @if(session('success'))
@@ -53,9 +50,9 @@
                 </div>
                 
                 <div class="col-md-6">
-                    <label class="form-label">Tanggal Lahir</label>
+                    <label class="form-label required">Tanggal Lahir</label>
                     <input type="date" name="birth_date" class="form-control @error('birth_date') is-invalid @enderror" 
-                           value="{{ old('birth_date', Auth::user()->birth_date) }}">
+                           value="{{ old('birth_date', Auth::user()->birth_date) }}" required>
                     @error('birth_date')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -64,18 +61,18 @@
 
             <div class="row mb-6">
                 <div class="col-md-6">
-                    <label class="form-label">Nomor Telepon</label>
+                    <label class="form-label required">Nomor Telepon</label>
                     <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" 
-                           value="{{ old('phone', Auth::user()->phone) }}" placeholder="Contoh: 081234567890">
+                           value="{{ old('phone', Auth::user()->phone) }}" placeholder="Contoh: 081234567890" required>
                     @error('phone')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 
                 <div class="col-md-6">
-                    <label class="form-label">Jabatan</label>
+                    <label class="form-label required">Jabatan</label>
                     <input type="text" name="position" class="form-control @error('position') is-invalid @enderror" 
-                           value="{{ old('position', Auth::user()->position) }}">
+                           value="{{ old('position', Auth::user()->position) }}" required>
                     @error('position')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -84,9 +81,9 @@
 
             <div class="row mb-6">
                 <div class="col-12">
-                    <label class="form-label">Alamat Rumah</label>
+                    <label class="form-label required">Alamat Rumah</label>
                     <textarea name="address" class="form-control @error('address') is-invalid @enderror" 
-                              rows="3" placeholder="Masukkan alamat lengkap">{{ old('address', Auth::user()->address) }}</textarea>
+                              rows="3" placeholder="Masukkan alamat lengkap" required>{{ old('address', Auth::user()->address) }}</textarea>
                     @error('address')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror

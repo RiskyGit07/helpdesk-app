@@ -20,7 +20,7 @@ class TicketController extends Controller
             $status = $request->status;
             
             // Validasi status yang diizinkan
-            if (in_array($status, ['open', 'in_progress', 'resolved', 'closed'])) {
+            if (in_array($status, ['open', 'in_progress', 'resolved', 'rejected'])) {
                 $query->where('status', $status);
             }
         }
@@ -41,7 +41,7 @@ class TicketController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|in:open,in_progress,resolved,closed'
+            'status' => 'required|in:open,in_progress,resolved,rejected'
         ]);
 
         $ticket = Ticket::findOrFail($id);
@@ -50,16 +50,20 @@ class TicketController extends Controller
             'status' => $request->status
         ]);
 
-        return back()->with('succes', 'Status berhasil diupdate');
+        return back()->with('success', 'Status berhasil diupdate');
     }
 
     public function sendResponse(Request $request, $id)
     {
+        $ticket = Ticket::findOrFail($id);
+
+        if (in_array($ticket->status, ['resolved', 'rejected'])) {
+            return back()->with('error', 'Tiket sudah ditutup, tidak bisa dibalas lagi.');
+        }
+
         $request->validate([
             'message' => 'required|string'
         ]);
-
-        $ticket = Ticket::findOrFail($id);
 
         Response::create([
             'ticket_id' => $ticket->id,
@@ -67,7 +71,9 @@ class TicketController extends Controller
             'message' => $request->message,
         ]);
 
-        $ticket->update(['status' => 'in_progress']);
+        if ($ticket->status === 'open') {
+            $ticket->update(['status' => 'in_progress']);
+        }
 
         return back()->with('succes', 'Balasan berhasil dikirim');
     }

@@ -15,7 +15,7 @@ class ProfileController extends Controller
         
         $totalTickets = Ticket::where('user_id', $userId)->count();
         $completedTickets = Ticket::where('user_id', $userId)
-                                 ->whereIn('status', ['resolved', 'closed'])
+                                 ->whereIn('status', ['resolved', 'rejected'])
                                  ->count();
         
         return view('user.profile.index', compact('totalTickets', 'completedTickets'));
@@ -31,17 +31,26 @@ class ProfileController extends Controller
         $user = Auth::user();
         
         $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'gender' => 'required|in:male,female',
             'phone' => 'required|string|max:15',
             'address' => 'required|string|max:255',
             'birth_date' => 'nullable|date',
+            'position' => $user->user_type !== 'mahasiswa'
+                ? 'required|string|max:255'
+                : 'nullable|string|max:255',
+            'password' => 'nullable|min:6|confirmed',
         ]);
 
         $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
             'gender' => $request->gender,
             'phone' => $request->phone,
             'address' => $request->address,
             'birth_date' => $request->birth_date,
+            'position' => $request->position,
         ]);
 
         return redirect()->route('user.profile')
@@ -58,6 +67,8 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'gender' => 'required|in:male,female',
             'phone' => 'required|string|max:15',
             'address' => 'required|string|max:255',
@@ -76,6 +87,8 @@ class ProfileController extends Controller
         ]);
 
         $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
             'gender' => $request->gender,
             'phone' => $request->phone,
             'address' => $request->address,
@@ -86,6 +99,7 @@ class ProfileController extends Controller
             'profile_completed' => 1,
         ]);
 
-        return redirect()->route('user.dashboard')->with('success', 'Profil berhasil dilengkapi!');
+        return redirect()->route('user.dashboard')
+                        ->with('success', 'Profil berhasil dilengkapi!');
     }
 }

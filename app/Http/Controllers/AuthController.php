@@ -49,8 +49,6 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
             'user_type' => 'required|in:mahasiswa,pegawai_asn,pegawai_non_asn',
-            'fakultas' => 'required_if:user_type,mahasiswa|nullable|string',
-            'prodi' => 'required_if:user_type,mahasiswa|nullable|string',
         ]);
 
         $user = User::create([
@@ -59,12 +57,10 @@ class AuthController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'user_type' => $validated['user_type'],
-            'fakultas' => $validated['fakultas'] ?? null,
-            'prodi' => $validated['prodi'] ?? null,
             'profile_completed' => 0,
         ]);
 
-        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');
+        return redirect()->route('login')->with('sukses', 'Registrasi berhasil! Silakan login.');
     }
 
     public function logout(Request $request)

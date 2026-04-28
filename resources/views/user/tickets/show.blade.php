@@ -19,13 +19,13 @@
                             'open' => 'primary',
                             'in_progress' => 'warning',
                             'resolved' => 'success',
-                            'closed' => 'secondary'
+                            'rejected' => 'danger'
                         ];
                         $statusTexts = [
                             'open' => 'Open',
                             'in_progress' => 'In Progress',
                             'resolved' => 'Resolved',
-                            'closed' => 'Closed'
+                            'rejected' => 'Rejected'
                         ];
                     @endphp
                     <span class="badge badge-{{ $statusColors[$ticket->status] }} fs-7 p-3">
@@ -169,20 +169,30 @@
             </div>
 
             {{-- FORM BALAS USER --}}
-            <div class="mb-10">
-                <form action="{{ route('user.tickets.response', $ticket->id) }}" method="POST">
-                    @csrf
+            @if(!in_array($ticket->status, ['resolved', 'rejected']))
+                <div class="mb-10">
+                    <form action="{{ route('user.tickets.response', $ticket->id) }}" method="POST">
+                        @csrf
 
-                    <div class="mb-3">
-                        <label class="form-label">Tulis Balasan</label>
-                        <textarea name="message" class="form-control" rows="3" required></textarea>
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tulis Balasan</label>
+                            <textarea name="message" class="form-control" rows="3" required></textarea>
+                        </div>
 
-                    <button class="btn btn-primary">
-                        Kirim Balasan
-                    </button>
-                </form>
-            </div>
+                        <button class="btn btn-primary">
+                            Kirim Balasan
+                        </button>
+                    </form>
+                </div>
+            @else
+                <div class="alert alert-warning">
+                    @if($ticket->status === 'resolved')
+                        Tiket ini sudah selesai <b>. Silakan buat pengaduan baru jika ada masalah lain.
+                    @else
+                        Tiket ini ditolak. Silakan buat pengaduan baru dengan informasi yang valid.
+                    @endif
+                </div>
+            @endif
 
             <!-- Aksi - Hanya tombol kembali -->
             <div class="separator separator-dashed my-6"></div>

@@ -17,7 +17,7 @@ class TicketController extends Controller
 
         // ✅ FILTER STATUS
         if ($request->has('status') && $request->status != 'all') {
-            if (in_array($request->status, ['open', 'in_progress', 'resolved', 'closed'])) {
+            if (in_array($request->status, ['open', 'in_progress', 'resolved', 'rejected'])) {
                 $query->where('status', $request->status);
             }
         }
@@ -76,15 +76,22 @@ class TicketController extends Controller
 
     public function sendResponse(Request $request, $id)
     {
-        $request->validate([
-            'message' => 'required|string'
-        ]);
-
         $ticket = Ticket::findOrFail($id);
 
+        // 🔒 pastikan hanya pemilik tiket
         if ($ticket->user_id !== Auth::id()) {
             abort(403);
         }
+
+        // ❌ blok kalau sudah selesai / ditolak
+        if (in_array($ticket->status, ['resolved', 'rejected'])) {
+            return back()->with('error', 'Tiket sudah tidak bisa dibalas.');
+        }
+
+        // ✅ validasi setelah lolos pengecekan
+        $request->validate([
+            'message' => 'required|string'
+        ]);
 
         Response::create([
             'ticket_id' => $ticket->id,
@@ -92,23 +99,11 @@ class TicketController extends Controller
             'message' => $request->message,
         ]);
 
-        // 🔥 update status biar aktif lagi
-        $ticket->update(['status' => 'open']);
-
-        return back()->with('success', 'Balasan berhasil dikirim');
-    }
-
-    public function close($id)
-    {
-        $ticket = Ticket::findOrFail($id);
-
-        if ($ticket->user_id !== Auth::id()) {
-            abort(403);
+        // 🔥 ubah ke open hanya kalau sebelumnya in_progress
+        if ($ticket->status === 'in_progress') {
+            $ticket->update(['status' => 'open']);
         }
 
-        $ticket->update(['status' => 'closed']);
-
-        return redirect()->route('user.tickets.show', $ticket)
-                        ->with('success', 'Pengaduan ditutup!');
+        return back()->with('success', 'Balasan berhasil dikirim');
     }
 }

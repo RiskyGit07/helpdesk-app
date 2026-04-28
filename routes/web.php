@@ -34,21 +34,18 @@ Route::middleware(['auth'])
     ->name('user.')
     ->group(function () {
 
-        // ✅ logout (bebas)
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-        // ✅ halaman wajib isi profil (TIDAK kena middleware)
         Route::get('/profile/complete', [UserProfileController::class, 'completeForm'])->name('profile.complete');
         Route::post('/profile/complete', [UserProfileController::class, 'completeStore'])->name('profile.complete.store');
 
-        // ✅ SEMUA YANG DIKUNCI
         Route::middleware('profile.complete')->group(function () {
 
             Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 
             Route::get('/profile', [UserProfileController::class, 'index'])->name('profile');
             Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
-            Route::put('/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
+            Route::post('/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
 
             Route::resource('tickets', UserTicketController::class);
 
@@ -74,10 +71,10 @@ Route::middleware(['auth', 'admin'])
             Route::resource('tickets', AdminTicketController::class);
 
             Route::post('tickets/{id}/response', [AdminTicketController::class, 'sendResponse'])->name('tickets.response');
-            Route::put('tickets/{id}/status', [AdminTicketController::class, 'updateStatus'])->name('tickets.updateStatus');
+            Route::post('tickets/{id}/status', [AdminTicketController::class, 'updateStatus'])->name('tickets.updateStatus');
             Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile');
             Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('profile.edit');
-            Route::put('/profile/update', [AdminProfileController::class, 'update'])->name('profile.update');
+            Route::post('/profile/update', [AdminProfileController::class, 'update'])->name('profile.update');
         });
     });
     

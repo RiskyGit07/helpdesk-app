@@ -35,9 +35,9 @@
                                 </div>
                             @endif
                             
-                            @if (session('success'))
+                            @if (session('sukses'))
                                 <div class="alert alert-success mb-5">
-                                    {{ session('success') }}
+                                    {{ session('suskses') }}
                                 </div>
                             @endif
                             
