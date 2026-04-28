@@ -3,9 +3,11 @@
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\TicketController as AdminTicketController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use App\Http\Controllers\Admin\MessageController as AdminMessageController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\TicketController as UserTicketController;
 use App\Http\Controllers\User\ProfileController as UserProfileController;
+use App\Http\Controllers\User\MessageController as UserMessageController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,9 +45,11 @@ Route::middleware(['auth'])
 
             Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 
+            Route::post('tickets/{id}/response', [UserTicketController::class, 'sendResponse'])->name('tickets.response');
             Route::get('/profile', [UserProfileController::class, 'index'])->name('profile');
             Route::get('/profile/edit', [UserProfileController::class, 'edit'])->name('profile.edit');
             Route::post('/profile/update', [UserProfileController::class, 'update'])->name('profile.update');
+            Route::get('/messages/inbox', [UserMessageController::class, 'inbox'])->name('messages.inbox');
 
             Route::resource('tickets', UserTicketController::class);
 
@@ -75,6 +79,7 @@ Route::middleware(['auth', 'admin'])
             Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile');
             Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('profile.edit');
             Route::post('/profile/update', [AdminProfileController::class, 'update'])->name('profile.update');
+             Route::get('/messages/inbox', [AdminMessageController::class, 'inbox'])->name('messages.inbox');
         });
     });
     

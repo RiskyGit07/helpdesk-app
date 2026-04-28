@@ -210,7 +210,6 @@
                 {{-- Update Status --}}
                 <form action="{{ route('admin.tickets.updateStatus', $ticket->id) }}" method="POST" class="d-flex gap-2">
                     @csrf
-                    @method('PUT')
 
                     <select name="status" class="form-select form-select-sm">
                         <option value="open" {{ $ticket->status == 'open' ? 'selected' : '' }}>Open</option>

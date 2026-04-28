@@ -105,6 +105,22 @@
                                         <span class="menu-title">Semua Pengaduan</span>
                                     </a>
                                 </div>
+
+                                <div class="menu-item">
+                                    <a class="menu-link" href="{{ route('admin.messages.inbox') }}">
+                                        <span class="menu-icon"><i class="ki-outline ki-message-programming fs-2"></i></span>
+                                        <span class="menu-title">Pesan Masuk</span>
+                                        
+                                        @php
+                                            $newMessages = \App\Models\Response::where('user_id', '!=', Auth::id())
+                                                ->where('is_read', false)
+                                                ->count();
+                                        @endphp
+                                        @if($newMessages > 0)
+                                            <span class="badge badge-danger rounded-pill ms-auto" style="font-size: 11px;">{{ $newMessages }}</span>
+                                        @endif
+                                    </a>
+                                </div>
                                 
                                 <div class="separator my-4"></div>
                                 

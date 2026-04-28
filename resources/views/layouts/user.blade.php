@@ -105,12 +105,30 @@
                                         <span class="menu-title">Semua Pengaduan</span>
                                     </a>
                                 </div>
-                                
+
                                 <!-- Buat Pengaduan -->
                                 <div class="menu-item">
                                     <a class="menu-link" href="{{ route('user.tickets.create') }}">
                                         <span class="menu-icon"><i class="ki-outline ki-add-files fs-2"></i></span>
                                         <span class="menu-title">Buat Pengaduan</span>
+                                    </a>
+                                </div>
+
+                                <div class="menu-item">
+                                    <a class="menu-link" href="{{ route('user.messages.inbox') }}">
+                                        <span class="menu-icon"><i class="ki-outline ki-message-programming fs-2"></i></span>
+                                        <span class="menu-title">Pesan Masuk</span>
+                                        
+                                        @php
+                                            $newMessages = \App\Models\Response::whereHas('ticket', function($q) {
+                                                $q->where('user_id', Auth::id());
+                                            })->where('user_id', '!=', Auth::id())
+                                            ->where('is_read', false)
+                                            ->count();
+                                        @endphp
+                                        @if($newMessages > 0)
+                                            <span class="badge badge-danger rounded-pill ms-auto" style="font-size: 11px;">{{ $newMessages }}</span>
+                                        @endif
                                     </a>
                                 </div>
                                 
