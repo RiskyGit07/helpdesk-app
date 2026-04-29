@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\CheckUserProfileComplete;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\CheckAdminProfileComplete;
+use App\Http\Middleware\MainAdminMiddleware; 
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,9 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'profile.complete' => CheckUserProfileComplete::class,
             'admin' => AdminMiddleware::class,
-            'admin.profile.complete' => CheckAdminProfileComplete::class, 
+            'main.admin' => MainAdminMiddleware::class,
+            'profile.complete' => CheckUserProfileComplete::class,
+            'admin.profile.complete' => CheckAdminProfileComplete::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

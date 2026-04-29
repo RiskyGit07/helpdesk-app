@@ -121,6 +121,24 @@
                                         @endif
                                     </a>
                                 </div>
+
+                                {{-- Kelola Admin (Semua Admin Bisa Lihat) --}}
+                                <div class="menu-item">
+                                    <a class="menu-link" href="{{ route('admin.manage-admins.index') }}">
+                                        <span class="menu-icon"><i class="ki-outline ki-user-tick fs-2"></i></span>
+                                        <span class="menu-title">Kelola Admin</span>
+                                    </a>
+                                </div>
+
+                                {{-- Tambah Admin (Sejajar, HANYA UNTUK ADMIN UTAMA ID=1) --}}
+                                @if(auth()->user()->id == 1)
+                                    <div class="menu-item">
+                                        <a class="menu-link" href="{{ route('admin.manage-admins.create') }}">
+                                            <span class="menu-icon"><i class="ki-outline ki-add-files fs-2"></i></span>
+                                            <span class="menu-title">Tambah Admin</span>
+                                        </a>
+                                    </div>
+                                @endif
                                 
                                 <div class="separator my-4"></div>
                                 

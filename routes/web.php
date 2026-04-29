@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\TicketController as AdminTicketController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 use App\Http\Controllers\Admin\MessageController as AdminMessageController;
+use App\Http\Controllers\Admin\ManageAdminController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\TicketController as UserTicketController;
 use App\Http\Controllers\User\ProfileController as UserProfileController;
@@ -31,6 +32,7 @@ Route::middleware('guest')->group(function () {
 });
 
 
+// ================= USER =================
 Route::middleware(['auth'])
     ->prefix('user')
     ->name('user.')
@@ -79,7 +81,20 @@ Route::middleware(['auth', 'admin'])
             Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile');
             Route::get('/profile/edit', [AdminProfileController::class, 'edit'])->name('profile.edit');
             Route::post('/profile/update', [AdminProfileController::class, 'update'])->name('profile.update');
-             Route::get('/messages/inbox', [AdminMessageController::class, 'inbox'])->name('messages.inbox');
-        });
-    });
-    
+            Route::get('/messages/inbox', [AdminMessageController::class, 'inbox'])->name('messages.inbox');
+
+            // ================= KELOLA ADMIN =================
+            // Halaman daftar admin (SEMUA ADMIN BISA AKSES)
+            Route::get('/manage-admins', [ManageAdminController::class, 'index'])->name('manage-admins.index');
+            
+            // Hanya admin utama (ID=1) yang bisa akses create, edit, update, delete
+            Route::middleware(['main.admin'])->group(function () {
+                Route::get('/manage-admins/create', [ManageAdminController::class, 'create'])->name('manage-admins.create');
+                Route::post('/manage-admins', [ManageAdminController::class, 'store'])->name('manage-admins.store');
+                Route::get('/manage-admins/{id}/edit', [ManageAdminController::class, 'edit'])->name('manage-admins.edit');
+                Route::put('/manage-admins/{id}', [ManageAdminController::class, 'update'])->name('manage-admins.update');
+                Route::delete('/manage-admins/{id}', [ManageAdminController::class, 'destroy'])->name('manage-admins.destroy');
+            });
+            
+        }); 
+    }); 
